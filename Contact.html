@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact</title>
+    <style>
+        :root{
+            --accent:#1e90ff;
+            --panel:rgba(0,0,0,0.6);
+            --glass:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+        }
+        html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,sans-serif;color:#ddd}
+        body{
+            background-color:#000;
+            background-image: url('https://images.unsplash.com/photo-1552083940-86877723de7a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size:cover;
+            background-position:center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:32px;
+        }
+        .container{
+            width:100%;
+            max-width:1000px;
+            display:grid;
+            grid-template-columns:1fr 420px;
+            gap:28px;
+            align-items:start;
+        }
+        /* Left: decorative images */
+        .gallery{
+            display:flex;
+            flex-direction:column;
+            gap:20px;
+        }
+        .card{
+            background:var(--panel);
+            border-radius:12px;
+            padding:12px;
+            box-shadow:0 6px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+            overflow:hidden;
+        }
+        .card img{width:100%;height:220px;object-fit:cover;display:block;border-radius:8px}
+        /* Right: contact form */
+        .panel{
+            background:var(--panel);
+            border-radius:15px;
+            padding:21px;
+            box-shadow:0 15px 56px rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+        }
+        header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        header h1{font-size:20px;margin:0;color:#fff}
+        nav a{color:var(--accent);text-decoration:none;font-weight:600}
+        form{display:flex;flex-direction:column;gap:12px}
+        label{font-size:13px;color:#bfc9d9}
+        input[type="text"],input[type="email"],textarea{
+            width:100%;
+            padding:10px 1px;
+            border-radius:8px;
+            border:1px solid rgba(22, 22, 22, 0.744);
+            background:rgba(0, 0, 0, 0.6);
+            color:#e3cfcf;
+            outline:none;
+            font-size:14px;
+        }
+        textarea{min-height:155px;resize:vertical}
+        .row{display:flex;gap:12px}
+        .btn{
+            background:linear-gradient(90deg,var(--accent),#4aa3ff);
+            color:#001;
+            border:none;
+            padding:10px 14px;
+            border-radius:8px;
+            font-weight:700;
+            cursor:pointer;
+            box-shadow:0 6px 18px rgba(30,144,255,0.14);
+        }
+        .links{display:flex;gap:10px;align-items:center;margin-top:6px}
+        .linktree{
+            display:inline-block;
+            padding:8px 12px;
+            background:rgba(243, 237, 237, 0.03);
+            border-radius:8px;
+            color:var(--accent);
+            text-decoration:none;
+            font-weight:600;
+        }
+        footer{margin-top:12px;font-size:12px;color:#9da9bd}
+        @media(max-width:880px){
+            .container{grid-template-columns:1fr;max-width:760px}
+            .card img{height:160px}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="gallery">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1350&q=80" alt="Laptop blue theme 1">
+            </div>
+            <div class="card">
+                <img src="https://plus.unsplash.com/premium_photo-1661877737564-3dfd7282efcb?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Laptop blue theme 2">
+            </div>
+        </div>
+
+        <div class="panel" role="region" aria-label="Contact form">
+            <header>
+                <h1>Contact Me</h1>
+                <nav><a href="Home.html" title="Go to home">Home</a></nav>
+            </header>
+
+            <form action="#" method="post" onsubmit="event.preventDefault(); alert('Thanks — form submission is not configured.');">
+                <div>
+                    <label for="name">Name</label>
+                    <input id="name" name="name" type="text" placeholder="Your name" required>
+                </div>
+
+                <div>
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                </div>
+
+                <div>
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Write your message..." required></textarea>
+                </div>
+
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <button class="btn" type="submit">Send</button>
+                    <div class="links">
+                        <a class="linktree" href="https://linktr.ee/ashisharyal" target="_blank" rel="noopener">My Linktree</a>
+                    </div>
+                </div>
+            </form>
+
+            <footer>Tip: clicking "Home" returns to the site's home tab.</footer>
+        </div>
+    </div>
+</body>
+</html>
