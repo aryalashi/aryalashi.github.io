@@ -19,6 +19,36 @@
             --text-light: #ddd;
             --text-muted: #bfbfbf;
         }
+        
+            :root {
+                --bg-color: #ffffff;
+                --text-color: #000000;
+                --link-color: #0077cc;
+            }
+
+            [data-theme="dark"] {
+                --bg-color: #121212;
+                --text-color: #f1f1f1;
+                --link-color: #66aaff;
+            }
+
+            body {
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                font-family: Arial, sans-serif;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            a {
+                color: var(--link-color);
+            }
+
+            button {
+                padding: 5px 10px;
+                margin: 10px 0;
+                cursor: pointer;
+            }
+
 
         html, body {
             height: 100%;
@@ -373,7 +403,7 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
+        @media (max-width: 500px) {
             .hero {
                 grid-template-columns: 1fr;
                 gap: 24px;
@@ -401,31 +431,93 @@
 <body>
     <!-- Header with Login -->
     <header>
-        <h1>Portfolio</h1>
+        <h1>Ashish Aryal</h1>
         <div class="auth-buttons">
             <button class="btn-login" onclick="openLoginModal()">Login</button>
             <button class="btn-logout" onclick="logout()">Logout</button>
+
         </div>
     </header>
 
     <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeLoginModal()">&times;</span>
-            <h2>Login</h2>
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input id="username" type="text" placeholder="Enter username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" placeholder="Enter password" required>
-                </div>
-                <button type="submit" class="btn-submit">Login</button>
-            </form>
-        </div>
+<div id="loginModal" class="modal" onclick="closeLoginModalOnBackdrop(event)">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+        <h2>Login</h2>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn-submit">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted);">
+            Don't have an account? <span onclick="switchToRegister()" style="color: var(--sky-blue); cursor: pointer; font-weight: 600;">Register here</span>
+        </p>
     </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal" onclick="closeRegisterModalOnBackdrop(event)">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeRegisterModal()">&times;</span>
+        <h2>Create Account</h2>
+        <form onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label for="register-name">Full Name</label>
+                <input id="register-name" type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input id="register-email" type="email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <input id="register-password" type="password" placeholder="Enter password" required>
+            </div>
+            <div class="form-group">
+                <label for="register-confirm">Confirm Password</label>
+                <input id="register-confirm" type="password" placeholder="Confirm password" required>
+            </div>
+            <button type="submit" class="btn-submit">Register</button>
+        </form>
+        <p style="text-align: center; margin-top: 16px; font-size: 13px; color: var(--text-muted);">
+            Already have an account? <span onclick="switchToLogin()" style="color: var(--sky-blue); cursor: pointer; font-weight: 600;">Login here</span>
+        </p>
+    </div>
+</div>
+<script>
+    window.openRegisterModal = () => {
+        document.getElementById('registerModal').classList.add('active');
+    };
+
+    window.switchToRegister = () => {
+        document.getElementById('loginModal').classList.remove('active');
+        document.getElementById('registerModal').classList.add('active');
+    };
+
+    window.closeLoginModalOnBackdrop = (event) => {
+        if (event.target.id === 'loginModal') {
+            closeLoginModal();
+        }
+    };
+
+    window.closeRegisterModalOnBackdrop = (event) => {
+        if (event.target.id === 'registerModal') {
+            closeRegisterModal();
+        }
+    };
+
+    window.togglePasswordVisibility = (inputId) => {
+        const input = document.getElementById(inputId);
+        input.type = input.type === 'password' ? 'text' : 'password';
+    };
+</script>
+
 
     <!-- Main Content -->
     <main class="container">
@@ -498,76 +590,105 @@
     <footer>
         © Ashish Aryal, All Rights Reserved.
     </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-    <script>
-        // Login functionality
-        function openLoginModal() {
-            document.getElementById('loginModal').classList.add('active');
-        }
+        const firebaseConfig = {
+        apiKey: "AIzaSyArY_0l8ANqImQb8hA38EZjtHotRjRksEk",
+        authDomain: "portfolio-56eb2.firebaseapp.com",
+        projectId: "portfolio-56eb2",
+        storageBucket: "portfolio-56eb2.firebasestorage.app",
+        messagingSenderId: "500262298004",
+        appId: "1:500262298004:web:aeef807ba5e22cc24eaf81"
+        };
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Simple validation (in production, use backend)
-            if (username && password) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('username', username);
-                updateAuthUI();
-                closeLoginModal();
-                alert('Login successful! Welcome, ' + username);
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('username');
-            updateAuthUI();
-            alert('Logged out successfully!');
-        }
-
-        function updateAuthUI() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const loginBtn = document.querySelector('.btn-login');
-            const logoutBtn = document.querySelector('.btn-logout');
-            const certificatesSection = document.getElementById('certificates');
-
-            if (isLoggedIn) {
-                loginBtn.style.display = 'none';
-                logoutBtn.style.display = 'block';
-                certificatesSection.classList.add('active');
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.querySelector('.btn-login').style.display = 'none';
+                document.querySelector('.btn-logout').style.display = 'block';
+                document.getElementById('certificates').classList.add('active');
             } else {
-                loginBtn.style.display = 'block';
-                logoutBtn.style.display = 'none';
-                certificatesSection.classList.remove('active');
+                document.querySelector('.btn-login').style.display = 'block';
+                document.querySelector('.btn-logout').style.display = 'none';
+                document.getElementById('certificates').classList.remove('active');
             }
-        }
+        });
 
-        function handleContactSubmit(event) {
+        window.openLoginModal = () => {
+            document.getElementById('loginModal').classList.add('active');
+        };
+
+        window.closeLoginModal = () => {
+            document.getElementById('loginModal').classList.remove('active');
+        };
+
+        window.closeRegisterModal = () => {
+            document.getElementById('registerModal').classList.remove('active');
+        };
+
+        window.switchToLogin = () => {
+            document.getElementById('registerModal').classList.remove('active');
+            document.getElementById('loginModal').classList.add('active');
+        };
+
+        window.handleLogin = (event) => {
             event.preventDefault();
-            const name = document.getElementById('contact-name').value;
-            const email = document.getElementById('contact-email').value;
-            const message = document.getElementById('contact-message').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    closeLoginModal();
+                    document.getElementById('email').value = '';
+                    document.getElementById('password').value = '';
+                })
+                .catch(err => alert(err.message));
+        };
 
-            alert(`Thank you ${name}! Your message has been sent. I'll get back to you at ${email} soon.`);
-            event.target.reset();
-        }
-
-        // Initialize UI on page load
-        window.addEventListener('load', updateAuthUI);
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('loginModal');
-            if (event.target == modal) {
-                closeLoginModal();
+        window.handleRegister = (event) => {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
             }
-        }
+            
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    closeRegisterModal();
+                    document.getElementById('register-name').value = '';
+                    document.getElementById('register-email').value = '';
+                    document.getElementById('register-password').value = '';
+                    document.getElementById('register-confirm').value = '';
+                    alert('Account created successfully!');
+                })
+                .catch(err => alert(err.message));
+        };
+
+        window.handleContactSubmit = (event) => {
+            event.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-email').value = '';
+            document.getElementById('contact-message').value = '';
+        };
+
+        window.logout = () => {
+            signOut(auth).then(() => alert('Logged out successfully!'));
+        };
     </script>
 </body>
 </html>
