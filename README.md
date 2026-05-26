@@ -4,7 +4,7 @@ Welcome to the source code repository for my personal website. This project serv
 
 The live site is automatically built and deployed via **GitHub Pages**.
 
-👉 **[View the Live Website](https://ashisharyal.me)** *(or your configured custom domain)*
+👉 **[View the Live Website](https://ashisharyal.me)** 
 
 ---
 
